@@ -78,4 +78,26 @@ public class UserFacade implements IUserFacade {
         
     }
 
+    //Creates new user, returning user roles if successful, null if not
+    @Override
+    public List<String> createUser(String userName, String password) {
+        EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+
+        User user;
+        try {
+            user = new User(userName, PasswordStorage.createHash(password));
+            user.addRole("User");
+
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+            
+            return authenticateUser(userName, password);
+            
+        } catch (PasswordStorage.CannotPerformOperationException ex) {
+            Logger.getLogger(UserFacade.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 }

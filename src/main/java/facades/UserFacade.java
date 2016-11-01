@@ -19,22 +19,27 @@ public class UserFacade implements IUserFacade {
     Make sure your new facade implements IUserFacade and keeps the name UserFacade, and that your Entity User class implements 
     IUser interface, then security should work "out of the box" with users and roles stored in your database */
     public UserFacade() {
+        //Create test users if the database is empty
+
         EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+        Query query = em.createQuery("SELECT u FROM User u");
+        List<User> result = query.getResultList();
+        if (result.isEmpty()) {
+            try {
+                User user = new User("user", PasswordStorage.createHash("test"));
+                user.addRole("User");
+                User admin = new User("admin", PasswordStorage.createHash("test"));
+                admin.addRole("Admin");
 
-        User user;
-        try {
-            user = new User("user", PasswordStorage.createHash("test"));
-            user.addRole("User");
-            User admin = new User("admin", PasswordStorage.createHash("test"));
-            admin.addRole("Admin");
+                em.getTransaction().begin();
+                em.persist(user);
+                em.persist(admin);
+                em.getTransaction().commit();
 
-            em.getTransaction().begin();
-            em.persist(user);
-            em.persist(admin);
-            em.getTransaction().commit();
-            
-        } catch (PasswordStorage.CannotPerformOperationException ex) {
-            Logger.getLogger(UserFacade.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (PasswordStorage.CannotPerformOperationException ex) {
+                Logger.getLogger(UserFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
     }
@@ -68,14 +73,36 @@ public class UserFacade implements IUserFacade {
             //return user != null && user.getPassword().equals(password) ? user.getRolesAsStrings() : null;
             if (user != null && PasswordStorage.verifyPassword(password, user.getPassword())) {
                 return user.getRolesAsStrings();
-            }
-            else
+            } else {
                 return null;
+            }
         } catch (PasswordStorage.CannotPerformOperationException | PasswordStorage.InvalidHashException ex) {
-            System.out.println("Exception in authenticatUser. "+ex.toString());
+            System.out.println("Exception in authenticatUser. " + ex.toString());
             return null;
         }
-        
+
+    }
+
+    //Creates new user, returning user roles if successful, null if not
+    @Override
+    public List<String> createUser(String userName, String password) {
+        EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+
+        User user;
+        try {
+            user = new User(userName, PasswordStorage.createHash(password));
+            user.addRole("User");
+
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+
+            return authenticateUser(userName, password);
+
+        } catch (PasswordStorage.CannotPerformOperationException ex) {
+            Logger.getLogger(UserFacade.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
 }

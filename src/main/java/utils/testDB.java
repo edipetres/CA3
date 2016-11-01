@@ -40,7 +40,7 @@ public class testDB {
 //        }
 
         UserFacade facade = new UserFacade();
-        List<String> authenticateUser = facade.authenticateUser("admin", "test");
-        System.out.println("Result: " + authenticateUser.get(0));
+        List<String> u = facade.createUser("testuser", "testpassword");
+        System.out.println("result "+u.get(0));
     }
 }

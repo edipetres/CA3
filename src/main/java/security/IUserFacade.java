@@ -21,4 +21,7 @@ public interface IUserFacade {
 
     IUser getUserByUserId(String id);
     
+    //Creates a user - which if successful, returns the user roles
+    List<String> createUser(String userName, String password);
+    
 }

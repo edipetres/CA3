@@ -64,11 +64,12 @@
                   <input type="password" style="width:10em;" placeholder="Password" class="form-control"
                          ng-model="user.password">
                 </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
+                <button type="submit" class="btn btn-success">Log in</button>
+                <button type="button" ng-click="register()" class="btn btn-primary">Register</button>
               </form>
               <div class="navbar-right" ng-show="isAuthenticated">
 
-                <p class="navbar-text">Logged on as: {{username}}</p>
+                <p class="navbar-text">Logged in as: {{username}}</p>
 
                 <button type="submit" class="btn btn-primary navbar-btn"  ng-click="logout()">Logout
                 </button>

@@ -10,18 +10,21 @@ angular.module('myApp.view2', ['ngRoute'])
             }])
 
         .controller('View2Ctrl', function ($http, $scope) {
-            $scope.cvr;
-            function getCompany(cvr) {
+            
+            $scope.getCompany = function () {
+
                 $http({
                     method: 'GET',
-                    url: 'http://cvrapi.dk/api?vat=' + cvr + '&country=dk',
-                    skipAuthorization: true
+                    url: 'http://cvrapi.dk/api?vat=' + $scope.cvr + '&country=dk'
                 }).then(function successCallback(res) {
-                   
+
+                    $scope.data = res.data.toString();
+                    console.log($scope.data);
+
                 }, function errorCallback(res) {
                     $scope.error = res.status + ": " + res.data.statusText;
                 });
-            }
+            };
 
 
         });

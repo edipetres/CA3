@@ -10,19 +10,37 @@ angular.module('myApp.view3', ['ngRoute'])
             }])
 
         .controller('View3Ctrl', function ($http, $scope) {
-            $scope.getCompany = function () {
 
+
+            $scope.searchText;
+            $scope.searchOptions = [{name: "VAT",opt: "vat"}, {name: "Name",opt: "name"}, {name: "Phone number",opt: "phone"}];
+            $scope.searcyBy = $scope.searchOptions[0];
+            
+            $scope.country;
+
+
+
+            $scope.getCompany = function () {
+                console.log("inside getCompany()");
+
+
+                
                 $http({
                     method: 'GET',
-                    skipAuthorization : true,
-                    url: 'http://cvrapi.dk/api?vat=' + $scope.cvr + '&country=dk'
-                    
+                    skipAuthorization: true,
+                    url: 'http://cvrapi.dk/api?' + $scope.searcyBy.opt + '=' + $scope.searchText + '&country=' + $scope.country
+
                 }).then(function successCallback(res) {
                     $scope.data = res.data;
-                    
+
+
                 }, function errorCallback(res) {
                     $scope.error = res.status + ": " + res.data.statusText;
                 });
+
+
+
+
             };
 
         });

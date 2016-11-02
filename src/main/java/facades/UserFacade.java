@@ -105,4 +105,13 @@ public class UserFacade implements IUserFacade {
         }
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+        Query query = em.createQuery("SELECT u FROM User u");
+        List<User> users = query.getResultList();
+        return users;
+        
+    }
+
 }

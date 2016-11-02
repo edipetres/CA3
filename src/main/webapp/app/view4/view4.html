@@ -1,1 +1,14 @@
-<h1>ez a </h1>
+<div uib-accordion-group class="panel-default" ng-show="hasSomethingToShow" heading="{{productionUnits.name}}" ng-repeat="units in productionUnits">
+    <div class="col-sm-6">
+        {{productionUnits.address}}
+        {{productionUnits.zipcode}}
+        {{productionUnits.city}}
+        {{}}
+    </div>
+    <div class="col-sm-6">
+        {{productionUnits.email}}
+        {{productionUnits.phone}}
+        {{productionUnits.fax}}
+        {{}}
+    </div>
+</div>

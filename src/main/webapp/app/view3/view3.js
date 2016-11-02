@@ -11,6 +11,8 @@ angular.module('myApp.view3', ['ngRoute'])
 
         .controller('View3Ctrl', function ($http, $scope) {
             $scope.isError = false;
+            $scope.hasSomethingToShow = false;
+            $scope.productionUnits = [];
             $scope.getCompany = function () {
 
                 $http({
@@ -21,6 +23,8 @@ angular.module('myApp.view3', ['ngRoute'])
                 }).then(function successCallback(res) {
                     $scope.data = res.data;
                     checkForGETRequestError();
+                    $scope.productionUnits = res.data.productionunits;
+                    $scope.hasSomethingToShow = true;
 
                 }, function errorCallback(res) {
 

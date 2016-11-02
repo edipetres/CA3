@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view3', ['ngRoute'])
+angular.module('myApp.view3', ['ngRoute','ui.bootstrap'])
 
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/view3', {
@@ -10,20 +10,15 @@ angular.module('myApp.view3', ['ngRoute'])
             }])
 
         .controller('View3Ctrl', function ($http, $scope) {
+            $scope.isError = false;
+            $scope.hasSomethingToShow = false;
+            $scope.productionUnits = [];
 
-
-            $scope.searchText;
+            $scope.searchText = "31678021";
             $scope.searchOptions = [{name: "VAT",opt: "vat"}, {name: "Name",opt: "name"}, {name: "Phone number",opt: "phone"}];
             $scope.searcyBy = $scope.searchOptions[0];
-            
             $scope.country;
-
-
-
             $scope.getCompany = function () {
-                console.log("inside getCompany()");
-
-
                 
                 $http({
                     method: 'GET',
@@ -32,15 +27,40 @@ angular.module('myApp.view3', ['ngRoute'])
 
                 }).then(function successCallback(res) {
                     $scope.data = res.data;
-
-
+                    checkForGETRequestError();
+                    $scope.productionUnits = res.data.productionunits;
+                    
+                    $scope.hasSomethingToShow = true;
                 }, function errorCallback(res) {
                     $scope.error = res.status + ": " + res.data.statusText;
                 });
-
-
-
-
             };
 
+
+            var checkForGETRequestError = function () {
+                if ($scope.data.error === "QUOTA_EXCEEDED") {
+                    $scope.errorMessage = "Your IP address or IP range has been temporarily restricted - usually until the next day. Stop posting. You have 200 free rounds per day.";
+                    $scope.isError = true;
+                }
+                if ($scope.data.error === "BANNED") {
+                    $scope.errorMessage = "Your IP address or IP range is blocked. Stop posting.";
+                    $scope.isError = true;
+                }
+                if ($scope.data.error === "INVALID_VAT") {
+                    $scope.errorMessage = "The VAT number you have turned up is not in the correct format.";
+                    $scope.isError = true;
+                }
+                if ($scope.data.error === "NOT_FOUND") {
+                    $scope.errorMessage = "Found something useful to deliver to you.";
+                    $scope.isError = true;
+                }
+                if ($scope.data.error === "INTERNAL_ERROR") {
+                    $scope.errorMessage = "There has been an error in either the call or the logging of the call. Cabinet finally contact.";
+                    $scope.isError = true;
+                }
+                if ($scope.data.error === "INVALID_UA") {
+                    $scope.errorMessage = "Please do not use the default useragent. Use useragent template that you can find here.";
+                    $scope.isError = true;
+                }
+            };
         });

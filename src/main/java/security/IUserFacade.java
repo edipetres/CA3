@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface IUserFacade {
 
+    List<User>getAllUsers();
     /*
     Return the Roles if users could be authenticated, otherwise null
      */

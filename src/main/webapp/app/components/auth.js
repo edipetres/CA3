@@ -47,7 +47,7 @@ angular.module('myApp.security', [])
                     ;
                         })
                         .error(function (data) {
-                            console.log("Error in register. Possibly the username already exists.")
+                            console.log("Error in register. Possibly the username already exists.");
                         });
             };
 

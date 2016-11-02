@@ -1,1 +1,37 @@
-hey there
+<div class="container" ng-controller="View3Ctrl">
+    <div class="form-group">
+        <form>
+            <label>Search</label>
+            <input type="text" placeholder="Search..." class="form-control" ng-model="cvr">
+            <!--<label>Serch by</label>
+            <select id="searchType" class="form-control">
+                <option>CVR</option>
+                <option>Name</option>
+            </select> -->
+            <button type="submit" class="btn btn-default" ng-click="getCompany()">Search</button>
+        </form>
+    </div>
+    <div class="container"> 
+        {{data.vat}}
+        {{data.name}}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Find Company Information</h3>
+                        </div>
+                        <div class="panel-body">
+                            <label>Search text</label>
+                            <input type="text" class="form-control" placeholder="Search for...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

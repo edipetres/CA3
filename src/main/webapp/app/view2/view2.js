@@ -11,10 +11,13 @@ angular.module('myApp.view2', ['ngRoute'])
 
         .controller('View2Ctrl', function ($http, $scope) {
             
+            
+            $scope.cvr;
+    
             $scope.getCompany = function () {
-
                 $http({
                     method: 'GET',
+                    skipAuthorization: true,
                     url: 'http://cvrapi.dk/api?vat=' + $scope.cvr + '&country=dk'
                 }).then(function successCallback(res) {
 

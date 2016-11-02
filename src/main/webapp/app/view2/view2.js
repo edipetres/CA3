@@ -14,9 +14,10 @@ angular.module('myApp.view2', ['ngRoute'])
             function getCompany(cvr) {
                 $http({
                     method: 'GET',
-                    url: 'http://cvrapi.dk/api?vat=' + cvr + '&country=dk'
+                    url: 'http://cvrapi.dk/api?vat=' + cvr + '&country=dk',
+                    skipAuthorization: true
                 }).then(function successCallback(res) {
-                   forEach
+                   
                 }, function errorCallback(res) {
                     $scope.error = res.status + ": " + res.data.statusText;
                 });

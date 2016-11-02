@@ -1,0 +1,8 @@
+{
+    "elements": {
+        "uib-accordion": {}
+    },
+    "attributes": {
+        "aria-expanded": {}
+    }
+}

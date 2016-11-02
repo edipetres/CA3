@@ -1,7 +1,7 @@
 <div class="container" ng-controller="View3Ctrl">
- 
-    <p ng-show="isError" style="color: red">{{errorMessage}}</p>
 
+    <p ng-show="isError" style="color: red">{{errorMessage}}</p>
+    
     <div class="container"> 
 
         <div class="container">
@@ -14,40 +14,71 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label>Search text</label>
-                                <input type="text" class="form-control" ng-model="searchText">
-
+                                <input type="text" class="form-control" ng-model="searchText"> <br>
                                 <label>Options</label>
-                                <select ng-model="searchBy" ng-options="option.name for option in searchOptions"></select>
-
+                                <select ng-model="searchBy" ng-init="searchBy = searchOptions[0]" ng-options="option.name for option in searchOptions"></select>
                                 <br>
                                 <label>Country</label>
                                 <select ng-model="country">
                                     <option value="dk" selected>DK</option>
                                     <option value="no">NO</option>
                                 </select>
-
-
                                 <br>
                                 <button class="btn btn-default"  placeholder="Search" ng-click="getCompany()"/>Search</button>
                             </div>
                         </div>
                     </div>
-                    <uib-accordion>
-                    <div uib-accordion-group class="panel-default" ng-show="hasSomethingToShow" heading="{{unit.name}}" ng-repeat="unit in productionUnits">
-                        <div class="col-sm-6">
-                            {{unit.address}}
-                            {{unit.zipcode}}
-                            {{unit.city}}
-                            {{}}
-                        </div>
-                        <div class="col-sm-6">
-                            {{unit.email}}
-                            {{unit.phone}}
-                            {{unit.fax}}
-                            {{}}
-                        </div>
+
+                </div>
+                <div class='col-sm-7'>
+
+                    <h2>{{info.name}}</h2>
+                    <br>
+                    <table style="width:100%" ng-show='info'>
+                        <tr>
+                            <td><label>CVR number</label></td><td>{{info.vat}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Address</td><td>{{info.address}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Zip & City</label></td><td>{{info.zipcode}} {{info.city}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Employees</label></td><td>{{info.employees}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Industry description</label></td><td>{{info.industrydesc}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Company description</label></td><td>{{info.companydesc}}</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <div class='col-sm-8'>
+                        <uib-accordion>
+                            <div uib-accordion-group class="panel-default" ng-show="hasSomethingToShow" heading="{{unit.name}}" ng-repeat="unit in productionUnits">
+                                <table style="width:100%">
+                                    <tr>
+                                        <td><label>Address</label></td><td>{{unit.address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Zip & City</label></td><td>{{unit.zipcode}} {{unit.city}}</td>
+                                    </tr>
+
+                                    <tr ng-hide="unit.phone == null">
+                                        <td><label>Phone</label></td><td>{{unit.phone}} </td>
+                                    </tr>
+
+                                    <tr ng-hide="unit.email == null">
+                                        <td><label>Email</label></td><td>{{unit.email}}</td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </uib-accordion>
                     </div>
-                    </uib-accordion>
+
                 </div>
             </div>
         </div>

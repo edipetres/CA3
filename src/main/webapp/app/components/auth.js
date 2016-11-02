@@ -39,15 +39,18 @@ angular.module('myApp.security', [])
             });
 
             clearUserDetails($scope);
-
+            
+            
             $scope.register = function () {
+
                 $http.post('api/register', $scope.user)
                         .success(function (data) {
-                            $scope.openErrorModal("Successful registration as " + $scope.user.username +". You can log in now.");
-                    ;
+                            $scope.openErrorModal("Successful registration as " + $scope.user.username + ". You can log in now.");
+                            ;
                         })
                         .error(function (data) {
                             console.log("Error in register. Possibly the username already exists.");
+
                         });
             };
 

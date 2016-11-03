@@ -31,6 +31,7 @@
         <script src="app/components/directives.js"></script>
         <script src="app/components/factories.js"></script>
         <script src="app/components/services.js"></script>
+        <link href="footer.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body ng-app="myApp">
@@ -81,9 +82,9 @@
         </nav>
 
         <div class="container" style='width: 100%'>
-            
+
             <div class="alert alert-danger" role="alert" ng-show="error">{{error}}</div>
-            <div ng-view>hallo</div>
+            <div ng-view></div>
         </div>
 
 
@@ -98,6 +99,12 @@
             <button class="btn btn-primary" type="button" ng-click="ok()" autofocus>OK</button>
             </div>
         </script>
+
+        <footer class="footer">
+            <div class="container text-center">
+                <p class="text-muted">CA3 power by <a href="https://www.facebook.com/edipetres?fref=ts">Edmond Petres</a> & <a href="https://www.facebook.com/matyasfeher">Mátyás Fehér</a></p>
+            </div>
+        </footer>
 
     </body>
 </html>

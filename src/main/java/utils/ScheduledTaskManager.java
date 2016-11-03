@@ -63,6 +63,9 @@ public class ScheduledTaskManager {
             }
             
             //Call method in facade to save data including the date and list of currencies
+            //DBFacade facade = new DBFacade();
+            //facade.saveRates(date, currencies);
+            
         } catch (IOException | JSONException ex) {
             Logger.getLogger(ScheduledTaskManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -23,6 +23,8 @@ public class Admin {
   @Produces(MediaType.APPLICATION_JSON)
   public String getUsers(){
      List<User> userList = facade.getAllUsers();
+     
+     
      String json = gson.toJson(userList);
      return json;
    }

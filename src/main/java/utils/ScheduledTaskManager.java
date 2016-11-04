@@ -8,12 +8,16 @@ package utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import facades.CurrencyFacade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,7 +37,7 @@ import org.json.XML;
  */
 @Singleton
 public class ScheduledTaskManager {
-    @Schedule(hour="0", minute="0", second="0", persistent=false)
+    @Schedule(hour="*", minute="*", second="*/15", persistent=false)
     public void dailyJob() {
         try {
             // Do your job here which should run every start of day.
@@ -52,20 +56,22 @@ public class ScheduledTaskManager {
             JSONObject dailyRates = exchangeRates.getJSONObject("dailyrates");
             String date = dailyRates.get("id").toString();
             
-            
-            List<Currency> currencies = new ArrayList();
+            ArrayList<CurrencyRate> currencies = new ArrayList();
             JSONArray jsonCurrencyArray = dailyRates.getJSONArray("currency");
             for (int i = 0; i < jsonCurrencyArray.length(); i++) {
                 JSONObject singleCurrency = (JSONObject) jsonCurrencyArray.get(i);
                 String code = singleCurrency.get("code").toString();
                 String rate = singleCurrency.get("rate").toString();
-                currencies.add(new Currency(code,rate));
+                currencies.add(new CurrencyRate(code,rate));
             }
             
             //Call method in facade to save data including the date and list of currencies
             //DBFacade facade = new DBFacade();
             //facade.saveRates(date, currencies);
-            
+            CurrencyFacade currencyFacade = new CurrencyFacade();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            currencyFacade.saveRates(currencies, dateFormat.toString());
+            System.out.println("sould have the rates saved.");
         } catch (IOException | JSONException ex) {
             Logger.getLogger(ScheduledTaskManager.class.getName()).log(Level.SEVERE, null, ex);
         }

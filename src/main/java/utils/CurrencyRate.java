@@ -9,11 +9,11 @@ package utils;
  *
  * @author edipetres
  */
-public class Currency {
+public class CurrencyRate {
     private final String code;
     private final String rate;
 
-    public Currency(String code, String rate) {
+    public CurrencyRate(String code, String rate) {
         this.code = code;
         this.rate = rate;
     }

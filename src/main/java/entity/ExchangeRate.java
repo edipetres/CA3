@@ -1,11 +1,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -15,26 +18,32 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class ExchangeRate implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Temporal(TemporalType.DATE)
-    private String date;
+    
+    private String date = "2016.02.11";
     private String rate;
-    @OneToMany
+    
+    
+    @ManyToOne()
+    @JoinColumn(name="CURRENCY")
     private Currency currency;
-
-    public ExchangeRate(Currency currency, String rate) {
+    
+    
+    public ExchangeRate(Currency currency, String rate, String date) {
         this.rate = rate;
         this.currency = currency;
+        this.date = date;
     }
-     
+
+
     //Default constructor
     public ExchangeRate() {
     }
-    
+
     //Getters&Setters
     public Integer getId() {
         return id;
@@ -60,12 +69,12 @@ public class ExchangeRate implements Serializable {
         this.rate = rate;
     }
 
-    public Currency getCurrency() {
-        return currency;
-    }
+//    public Currency getCurrency() {
+//        return currency;
+//    }
+//
+//    public void setCurrency(Currency currency) {
+//        this.currency = currency;
+//    }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-    
 }

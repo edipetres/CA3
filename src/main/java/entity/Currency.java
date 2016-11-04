@@ -1,10 +1,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 /**
@@ -14,12 +17,15 @@ import javax.persistence.OrderBy;
 @Entity
 public class Currency implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+  
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @OrderBy("currency DESC")
     private String currency;
+    
     private String description;
+    
+    @OneToMany(mappedBy="currency")
+    private List<ExchangeRate> rates;
 
     public Currency(String currency, String description) {
         this.currency = currency;

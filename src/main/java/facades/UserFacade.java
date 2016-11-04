@@ -30,6 +30,7 @@ public class UserFacade implements IUserFacade {
                 user.addRole("User");
                 User admin = new User("admin", PasswordStorage.createHash("test"));
                 admin.addRole("Admin");
+                admin.addRole("User");
 
                 em.getTransaction().begin();
                 em.persist(user);

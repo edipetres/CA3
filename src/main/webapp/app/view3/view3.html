@@ -1,7 +1,7 @@
 <div class="container" ng-controller="View3Ctrl">
 
     <p ng-show="isError" style="color: red">{{errorMessage}}</p>
-    
+
     <div class="container"> 
 
         <div class="container">
@@ -24,7 +24,8 @@
                                     <option value="no">NO</option>
                                 </select>
                                 <br>
-                                <button class="btn btn-default"  placeholder="Search" ng-click="getCompany()"/>Search</button>
+                                <button class="btn btn-primary" type="submit" ng-click="getCompany()">Search..</button>
+                                
                             </div>
                         </div>
                     </div>
@@ -74,7 +75,7 @@
                                         <td><label>Email</label></td><td>{{unit.email}}</td>
                                     </tr>
                                 </table>
-
+                                
                             </div>
                         </uib-accordion>
                     </div>

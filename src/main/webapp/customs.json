@@ -3,6 +3,7 @@
         "uib-accordion": {}
     },
     "attributes": {
+        "integrity": {},
         "aria-expanded": {}
     }
 }

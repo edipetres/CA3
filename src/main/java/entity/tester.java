@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+import rest.CurrencyService;
 import utils.CurrencyRate;
 import utils.ScheduledTaskManager;
 
@@ -34,51 +35,89 @@ public class tester {
      */
     public static void main(String[] args) {
 
+        //fetchData();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
         EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
         CurrencyFacade cfacade = new CurrencyFacade();
-        List<ExchangeRate> ratesByDay = cfacade.getRatesByDay("2011-01-18");
-        for (ExchangeRate rate : ratesByDay) {
-            System.out.println("Rate: " + rate.getDate() + " " + rate.getId());
+        List<ExchangeRate> list = cfacade.getLatestRates();
+        System.out.println("list size: "+list.size());
+        //Convert the object to be json compatible
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("date", list.get(0).getDate());
+
+            JSONArray jarray = new JSONArray();
+            for (ExchangeRate rate : list) {
+                JSONObject tempObj = new JSONObject();
+                tempObj.put("currency", rate.getCurrency().getCurrency());
+                tempObj.put("rate", rate.getRate());
+                
+                jarray.put(tempObj);
+            }
+            obj.put("currencies", jarray);
+            
+
+        } catch (JSONException ex) {
+            Logger.getLogger(CurrencyService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        //Code for fetching today's rates
-//        try {
-//            // Do your job here which should run every start of day.
-//            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//            
-//            URLConnection con = new URL("http://www.nationalbanken.dk/_vti_bin/DN/DataService.svc/CurrencyRatesXML?lang=en").openConnection();
-//            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//            String inputLine;
-//            String data = "";
-//            while ((inputLine = in.readLine()) != null){
-//                data += inputLine;
-//            }
-//            JSONObject json = XML.toJSONObject(data);
-//            
-//            JSONObject exchangeRates = json.getJSONObject("exchangerates");
-//            JSONObject dailyRates = exchangeRates.getJSONObject("dailyrates");
-//            String date = dailyRates.get("id").toString();
-//            
-//            ArrayList<CurrencyRate> currencies = new ArrayList();
-//            JSONArray jsonCurrencyArray = dailyRates.getJSONArray("currency");
-//            for (int i = 0; i < jsonCurrencyArray.length(); i++) {
-//                JSONObject singleCurrency = (JSONObject) jsonCurrencyArray.get(i);
-//                String code = singleCurrency.get("code").toString();
-//                String rate = singleCurrency.get("rate").toString();
-//                currencies.add(new CurrencyRate(code,rate));
-//            }
-//            
-//            //Call method in facade to save data including the date and list of currencies
-//            //DBFacade facade = new DBFacade();
-//            //facade.saveRates(date, currencies);
-//            CurrencyFacade currencyFacade = new CurrencyFacade();
-//            //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-//            currencyFacade.saveRates(currencies, date);
-//            System.out.println("sould have the rates saved.");
-//        } catch (IOException | JSONException ex) {
-//            Logger.getLogger(ScheduledTaskManager.class.getName()).log(Level.SEVERE, null, ex);
+
+        String json = gson.toJson(obj);
+        System.out.println("json = " + json);
+
+
+
+////List<ExchangeRate> ratesByDay = cfacade.getRatesByDay("2011-01-18");
+//        List<ExchangeRate> ratesByDay = cfacade.getLatestRates();
+//        System.out.println("result "+ratesByDay.size());
+//        for (ExchangeRate rate : ratesByDay) {
+//            System.out.println("Rate: " + rate.getDate() + " " + rate.getId());
 //        }
+//        
+        
+        
+       
+    }
+
+    private static void fetchData() {
+        //Code for fetching today's rates
+        try {
+            // Do your job here which should run every start of day.
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            
+            URLConnection con = new URL("http://www.nationalbanken.dk/_vti_bin/DN/DataService.svc/CurrencyRatesXML?lang=en").openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            String data = "";
+            while ((inputLine = in.readLine()) != null){
+                data += inputLine;
+            }
+            JSONObject json = XML.toJSONObject(data);
+            
+            JSONObject exchangeRates = json.getJSONObject("exchangerates");
+            JSONObject dailyRates = exchangeRates.getJSONObject("dailyrates");
+            String date = dailyRates.get("id").toString();
+            
+            ArrayList<CurrencyRate> currencies = new ArrayList();
+            JSONArray jsonCurrencyArray = dailyRates.getJSONArray("currency");
+            for (int i = 0; i < jsonCurrencyArray.length(); i++) {
+                JSONObject singleCurrency = (JSONObject) jsonCurrencyArray.get(i);
+                String code = singleCurrency.get("code").toString();
+                String rate = singleCurrency.get("rate").toString();
+                currencies.add(new CurrencyRate(code,rate));
+            }
+            
+            //Call method in facade to save data including the date and list of currencies
+            //DBFacade facade = new DBFacade();
+            //facade.saveRates(date, currencies);
+            CurrencyFacade currencyFacade = new CurrencyFacade();
+            //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            currencyFacade.saveRates(currencies, date);
+            System.out.println("sould have the rates saved.");
+        } catch (IOException | JSONException ex) {
+            Logger.getLogger(ScheduledTaskManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //
 //
 //        em.getTransaction().begin();
@@ -117,7 +156,6 @@ public class tester {
 //        em.persist(new Currency("ZAR", "South African rand"));
 //        em.getTransaction().commit();
 //        
-       
     }
 
 }

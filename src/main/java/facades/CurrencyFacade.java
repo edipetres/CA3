@@ -45,8 +45,8 @@ public class CurrencyFacade {
         }
     }
 
-    public List<ExchangeRate> getTodaysRates() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    public List<ExchangeRate> getLatestRates() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date d = new Date();
         String date = dateFormat.format(d);
 
@@ -54,8 +54,22 @@ public class CurrencyFacade {
         Query query = em.createQuery("SELECT e FROM ExchangeRate e WHERE e.date = :today");
         query.setParameter("today", date);
         List<ExchangeRate> exchangeRateList = query.getResultList();
+
+        //If no rate for today, try yesterday
+        if (exchangeRateList.isEmpty()) {
+            System.out.println("Fetching for yesterday");
+            
+            Date yday = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+            String ydate = dateFormat.format(yday);
+            query = em.createQuery("SELECT e FROM ExchangeRate e WHERE e.date = :day");
+            query.setParameter("day", ydate);
+            System.out.println("ydate = " + ydate);
+            exchangeRateList = query.getResultList();
+        }
+        
         return exchangeRateList;
     }
+
 
     public List<ExchangeRate> getRatesByDay(String dateStr) {
 

@@ -15,7 +15,6 @@ angular.module('myApp.view4', ['ngRoute'])
             $scope.getDailyRates = function () {
                 $http({
                     method: 'GET',
-                    skipAuthorization: true,
                     url: 'api/currency/dailyrates'
                 }).then(function successCallback(res) {
                     $scope.rates = res.data;

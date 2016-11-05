@@ -63,11 +63,23 @@ public class CurrencyFacade {
             String ydate = dateFormat.format(yday);
             query = em.createQuery("SELECT e FROM ExchangeRate e WHERE e.date = :day");
             query.setParameter("day", ydate);
-            System.out.println("ydate = " + ydate);
+            System.out.println("Fetching the data for day: "+ydate);
             exchangeRateList = query.getResultList();
         }
         
         return exchangeRateList;
+    }
+    
+    //Will return the lates rate for the chosen currency
+    public double getCurrencyRate(String currency) {
+        
+        List<ExchangeRate> latestRates = getLatestRates();
+        for (ExchangeRate rate : latestRates ) {
+            if (rate.getCurrency().getCurrency().equalsIgnoreCase(currency)) {
+                return Double.parseDouble(rate.getRate());
+            }
+        }
+        return 0;
     }
 
 

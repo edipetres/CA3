@@ -41,33 +41,33 @@ public class tester {
         
         EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
         CurrencyFacade cfacade = new CurrencyFacade();
-        List<ExchangeRate> list = cfacade.getLatestRates();
-        System.out.println("list size: "+list.size());
-        //Convert the object to be json compatible
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("date", list.get(0).getDate());
-
-            JSONArray jarray = new JSONArray();
-            for (ExchangeRate rate : list) {
-                JSONObject tempObj = new JSONObject();
-                tempObj.put("currency", rate.getCurrency().getCurrency());
-                tempObj.put("rate", rate.getRate());
-                
-                jarray.put(tempObj);
-            }
-            obj.put("currencies", jarray);
-            
-
-        } catch (JSONException ex) {
-            Logger.getLogger(CurrencyService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        String json = gson.toJson(obj);
-        System.out.println("json = " + json);
-
-
-
+        double currencyRate = cfacade.getCurrencyRate("aud");
+        System.out.println("currencyRate = " + currencyRate);
+        
+//        List<ExchangeRate> list = cfacade.getLatestRates();
+//        System.out.println("list size: "+list.size());
+//        //Convert the object to be json compatible
+//        JSONObject obj = new JSONObject();
+//        try {
+//            obj.put("date", list.get(0).getDate());
+//
+//            JSONArray jarray = new JSONArray();
+//            for (ExchangeRate rate : list) {
+//                JSONObject tempObj = new JSONObject();
+//                tempObj.put("currency", rate.getCurrency().getCurrency());
+//                tempObj.put("rate", rate.getRate());
+//                
+//                jarray.put(tempObj);
+//            }
+//            obj.put("currencies", jarray);
+//
+//
+//        } catch (JSONException ex) {
+//            Logger.getLogger(CurrencyService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        String json = gson.toJson(obj);
+//        System.out.println("json = " + json);
 ////List<ExchangeRate> ratesByDay = cfacade.getRatesByDay("2011-01-18");
 //        List<ExchangeRate> ratesByDay = cfacade.getLatestRates();
 //        System.out.println("result "+ratesByDay.size());

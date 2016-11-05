@@ -70,11 +70,34 @@ public class CurrencyService {
     public String getSomething(@PathParam("amount") int amount,
             @PathParam("fromcurrency") String fromCurrency,
             @PathParam("tocurrency") String toCurrency) {
+        JSONObject jo = new JSONObject();
         
+        try {
+            CurrencyFacade cf = new CurrencyFacade();
+            double result = 0;
+            //Converting from DKK
+            if (fromCurrency.equalsIgnoreCase("DKK")) {
+                double rate = cf.getCurrencyRate(toCurrency);
+                result = (amount * 100) / rate;
+            }
+            //Converting to DKK
+            if (toCurrency.equalsIgnoreCase("DKK")) {
+                result = (amount * cf.getCurrencyRate(fromCurrency)) / 100;
+            }
+            
+            //Conversion between all other currencies
+            if (!toCurrency.equalsIgnoreCase("DKK") && !toCurrency.equalsIgnoreCase("DKK")) {
+                double dkkres = (amount * cf.getCurrencyRate(fromCurrency)) / 100;
+                result = (dkkres * 100) / cf.getCurrencyRate(toCurrency);
+            }
+            
+            jo.put("result", result);
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(CurrencyService.class.getName()).log(Level.SEVERE, null, ex);
+            return "{'error' : 'JSONException: " + ex.toString() + "'}";
+        }
         
-        
-        
-        
-        return "{'response': '756.14'}";
+        return gson.toJson(jo);
     }
 }

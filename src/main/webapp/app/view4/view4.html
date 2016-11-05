@@ -4,12 +4,12 @@
         <table class="table table-striped table-sm">
             <thead class=" thead thead-inverse">
                 <tr>
-                    <td>Currency</td>
-                    <td>Rate</td>
+                    <td><strong>Currency</strong></td>
+                    <td><strong>Rate</strong></td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="x in response">
+                <tr ng-repeat="x in response | orderBy: 'x.map.currency'">
                     <td>{{x.map.currency}}</td>
                     <td>{{x.map.rate}}</td>
                 </tr>
@@ -19,18 +19,18 @@
     <div class="col-sm-7">
         <div class="panel panel-default">
             <div class="panel panel-heading">
-                <p>Rate Converter</p>
+                <p><b>Rate Converter</b></p>
             </div>
             <div class="panel panel-body">
                 <div class="form-group">
-                    <label>From</label>
-                    <select>
-                        <option ng-model="selectedCurrency" ng-repeat="y in response">{{y.map.currency}}</option>
+                    <label>From: </label>
+                    <select ng-model="selectedCurrency">
+                        <option ng-repeat="y in response" >{{y.map.currency}}</option>
                     </select>
                     <input type="text" ng-model="fromAmount">
-                    <label>To</label>
-                    <select>
-                        <option ng-model="desiredCurrency" ng-repeat="z in response">{{z.map.currency}}</option>
+                    <label>To: </label>
+                    <select ng-model="desiredCurrency">
+                        <option ng-repeat="z in response" >{{z.map.currency}}</option>
                     </select>
                     <input type="text" ng-model="result" readonly>
                     <button class="btn btn-primary" ng-click="convert()">Convert</button>

@@ -23,14 +23,15 @@ angular.module('myApp.view4', ['ngRoute'])
                 });
 
             });
-
             $scope.convert = function () {
-
+                console.log($scope.selectedCurrency);
+                console.log($scope.desiredCurrency);
+                console.log($scope.fromAmount);
                 $http({
                     method: 'GET',
-                    url: 'api/currency/calculator/' + $scope.selectedCurrency + '/' + $scope.fromAmount + '/' + $scope.desiredCurrency
+                    url: 'api/currency/calculator/' + $scope.fromAmount + '/' + $scope.selectedCurrency + '/' + $scope.desiredCurrency
                 }).then(function successCallback(res) {
-                    $scope.result = res;
+                    $scope.result = res.data.map.result;
                 }, function errorCallback(res) {
                     $scope.error = res.status + ": " + res.data.statusText;
 

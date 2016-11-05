@@ -74,6 +74,7 @@ public class ScheduledTaskManager {
             System.out.println("sould have the rates saved.");
         } catch (IOException | JSONException ex) {
             Logger.getLogger(ScheduledTaskManager.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Exception in ScheduledTaskManager. Exception: "+ex.toString());
         }
     }
     

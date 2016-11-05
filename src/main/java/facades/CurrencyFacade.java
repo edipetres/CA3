@@ -8,10 +8,15 @@ package facades;
 import entity.Currency;
 import entity.ExchangeRate;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -44,11 +49,20 @@ public class CurrencyFacade {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date d = new Date();
         String date = dateFormat.format(d);
-        
+
         EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
         Query query = em.createQuery("SELECT e FROM ExchangeRate e WHERE e.date = :today");
         query.setParameter("today", date);
-        List<ExchangeRate> exchangeRateList = query.getResultList();      
+        List<ExchangeRate> exchangeRateList = query.getResultList();
+        return exchangeRateList;
+    }
+
+    public List<ExchangeRate> getRatesByDay(String dateStr) {
+
+        EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+        Query query = em.createQuery("SELECT e FROM ExchangeRate e WHERE e.date = :day");
+        query.setParameter("day", dateStr);
+        List<ExchangeRate> exchangeRateList = query.getResultList();
         return exchangeRateList;
     }
 

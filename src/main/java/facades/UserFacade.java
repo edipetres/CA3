@@ -58,6 +58,24 @@ public class UserFacade implements IUserFacade {
         }
     }
 
+    public boolean deleteUserById(String username) {
+        EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+        try {
+            User user = em.find(User.class, username);
+            em.getTransaction().begin();
+            em.remove(user);
+            em.getTransaction().commit();
+        } 
+        catch(Exception e) {
+            System.out.println("Exception in deleteUserById. "+e.toString());
+            return false;
+        }
+        finally {
+            em.close();
+        }
+        return true;
+    }
+
     /*
   Return the Roles if users could be authenticated, otherwise null
      */
@@ -112,7 +130,7 @@ public class UserFacade implements IUserFacade {
         Query query = em.createQuery("SELECT u FROM User u");
         List<User> users = query.getResultList();
         return users;
-        
+
     }
 
 }

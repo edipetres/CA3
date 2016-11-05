@@ -66,12 +66,10 @@ public class ScheduledTaskManager {
             }
             
             //Call method in facade to save data including the date and list of currencies
-            //DBFacade facade = new DBFacade();
-            //facade.saveRates(date, currencies);
             CurrencyFacade currencyFacade = new CurrencyFacade();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            currencyFacade.saveRates(currencies, dateFormat.toString());
-            System.out.println("sould have the rates saved.");
+            //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            currencyFacade.saveRates(currencies, date);
+            System.out.println("Dates successfuly saved for date: "+date);
         } catch (IOException | JSONException ex) {
             Logger.getLogger(ScheduledTaskManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Exception in ScheduledTaskManager. Exception: "+ex.toString());

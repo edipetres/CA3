@@ -8,25 +8,31 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("admin")
 @RolesAllowed("Admin")
 public class Admin {
-  
+
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static UserFacade facade = new UserFacade();
-    
-  @GET
-  @Path("users")
-  @Produces(MediaType.APPLICATION_JSON)
-  public String getUsers(){
-     List<User> userList = facade.getAllUsers();
-     
-     
-     String json = gson.toJson(userList);
-     return json;
-   }
- 
+
+    @GET
+    @Path("users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getUsers() {
+        List<User> userList = facade.getAllUsers();
+        String json = gson.toJson(userList);
+        return json;
+    }
+
+    @GET
+    @Path("user/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser(@PathParam("username") String username) {
+        boolean wasDeleted = facade.deleteUserById(username);
+        return "{\"success\": \""+wasDeleted+"\"}";
+    }
 }

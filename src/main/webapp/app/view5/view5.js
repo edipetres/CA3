@@ -23,4 +23,11 @@ angular.module('myApp.view5', ['ngRoute'])
                 $scope.error = res.status + ": " + res.data.statusText;
             });
 
+
+            $scope.deleteUser = function(username) {
+                var response = $http.get('api/admin/user/' +username);
+                response.success(function() {
+                    alert("User deleted.");
+                });
+            };
         });

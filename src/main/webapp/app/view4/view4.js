@@ -11,6 +11,7 @@ angular.module('myApp.view4', ['ngRoute'])
             }])
         .controller('View4Ctrl', function ($scope, $http) {
             $scope.rates = [];
+    
             $scope.getDailyRates = function () {
                 $http({
                     method: 'GET',
@@ -19,8 +20,12 @@ angular.module('myApp.view4', ['ngRoute'])
                 }).then(function successCallback(res) {
                     $scope.rates = res.data;
                 }, function errorCallback(res) {
-                   $scope.error = res.status + ": " + res.data.statusText;
+                    $scope.error = res.status + ": " + res.data.statusText;
                 });
+            };
+
+            $scope.convert = function () {
+
             };
 
         });

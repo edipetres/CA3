@@ -8,7 +8,7 @@
                             <th>#</th>
                             <th>Username</th>
                             <th>Roles</th>
-
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -19,6 +19,9 @@
                                 <ul>
                                     <li ng-repeat="u in user.roles">{{u}}</li>
                                 </ul>
+                            </td>
+                            <td>
+                                <button ng-click="deleteUser(user.userName)">Delete</button>
                             </td>
                         </tr>
                     </tbody>

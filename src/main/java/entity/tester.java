@@ -3,6 +3,7 @@ package entity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import facades.CurrencyFacade;
+import facades.UserFacade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,9 +41,15 @@ public class tester {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
-        CurrencyFacade cfacade = new CurrencyFacade();
-        double currencyRate = cfacade.getCurrencyRate("aud");
-        System.out.println("currencyRate = " + currencyRate);
+        CurrencyFacade cf = new CurrencyFacade();
+        UserFacade uf = new UserFacade();
+        
+        User find = em.find(User.class, "testy");
+        
+        em.getTransaction().begin();
+        em.remove(find);
+        em.getTransaction().commit();
+       
         
 //        List<ExchangeRate> list = cfacade.getLatestRates();
 //        System.out.println("list size: "+list.size());

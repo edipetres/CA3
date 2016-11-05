@@ -9,7 +9,18 @@ angular.module('myApp.view4', ['ngRoute'])
 
                 });
             }])
-                .controller('View4Ctrl', function(){
-                    
-                    
+        .controller('View4Ctrl', function ($scope, $http) {
+            $scope.rates = [];
+            $scope.getDailyRates = function () {
+                $http({
+                    method: 'GET',
+                    skipAuthorization: true,
+                    url: 'api/currency/dailyrates'
+                }).then(function successCallback(res) {
+                    $scope.rates = res.data;
+                }, function errorCallback(res) {
+                   $scope.error = res.status + ": " + res.data.statusText;
                 });
+            };
+
+        });

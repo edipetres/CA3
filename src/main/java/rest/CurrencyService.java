@@ -5,6 +5,11 @@
  */
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import entity.ExchangeRate;
+import facades.CurrencyFacade;
+import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,12 +24,16 @@ import javax.ws.rs.core.MediaType;
 @RolesAllowed("User")
 public class CurrencyService {
 
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static CurrencyFacade facade = new CurrencyFacade();
+    
     @GET
     @Path("dailyrates")
     @Produces(MediaType.APPLICATION_JSON)
     public String getRates() {
-        
-        String result = "{'message' : 'Daily Rates'}";
-        return result;
+        List<ExchangeRate> list = facade.getTodaysRates();
+        String json = gson.toJson(list);     
+        return json;
+
     }
 }

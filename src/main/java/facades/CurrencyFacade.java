@@ -7,10 +7,14 @@ package facades;
 
 import entity.Currency;
 import entity.ExchangeRate;
-import java.awt.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import utils.CurrencyRate;
 
 /**
@@ -34,6 +38,18 @@ public class CurrencyFacade {
                 em.close();
             }
         }
+    }
+
+    public List<ExchangeRate> getTodaysRates() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date d = new Date();
+        String date = dateFormat.format(d);
+        
+        EntityManager em = Persistence.createEntityManagerFactory("pu", null).createEntityManager();
+        Query query = em.createQuery("SELECT e FROM ExchangeRate e WHERE e.date = :today");
+        query.setParameter("today", date);
+        List<ExchangeRate> exchangeRateList = query.getResultList();      
+        return exchangeRateList;
     }
 
     public static Currency getCurrency(String currency) {
